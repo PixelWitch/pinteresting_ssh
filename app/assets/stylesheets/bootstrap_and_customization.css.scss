@@ -1,7 +1,19 @@
-
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
 $body-bg: #ecf0f1;
 $jumbotron-bg: white;
-$navbar-inverse-bg: #9b59b6;
-$navbar-inverse-link-color: white;
-$brand-primary:  #ccaeee;
+$navbar-height: 45px;
+$navbar-default-bg: #9b59b6;
+$navbar-default-link-color: white;
+$brand-primary: #8e44ad;
 @import 'bootstrap';
+
+.center {
+     text-align: center;
+}
+.navbar-default .nav {
+  font-family: 'Pacifico';
+}
+.navbar-brand {
+     font-family: 'Pacifico';
+     font-weight: bold;
+}
