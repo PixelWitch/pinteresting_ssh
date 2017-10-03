@@ -5,60 +5,59 @@ SHELL = /bin/sh
 V = 0
 Q1 = $(V:1=)
 Q = $(Q1:0=@)
-ECHO1 = $(V:1=@:)
-ECHO = $(ECHO1:0=@echo)
+ECHO1 = $(V:1=@ :)
+ECHO = $(ECHO1:0=@ echo)
 NULLCMD = :
 
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /usr/include/ruby-2.3.0
+topdir = /usr/share/rvm/rubies/ruby-2.4.1/include/ruby-2.4.0
 hdrdir = $(topdir)
-arch_hdrdir = /usr/include/x86_64-linux-gnu/ruby-2.3.0
+arch_hdrdir = /usr/share/rvm/rubies/ruby-2.4.1/include/ruby-2.4.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/usr
-rubysitearchprefix = $(sitearchlibdir)/$(RUBY_BASE_NAME)
-rubyarchprefix = $(archlibdir)/$(RUBY_BASE_NAME)
+prefix = $(DESTDIR)/usr/share/rvm/rubies/ruby-2.4.1
+rubysitearchprefix = $(rubylibprefix)/$(sitearch)
+rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
 exec_prefix = $(prefix)
-vendorarchhdrdir = $(sitearchincludedir)/$(RUBY_VERSION_NAME)/vendor_ruby
-sitearchhdrdir = $(sitearchincludedir)/$(RUBY_VERSION_NAME)/site_ruby
-rubyarchhdrdir = $(archincludedir)/$(RUBY_VERSION_NAME)
+vendorarchhdrdir = $(vendorhdrdir)/$(sitearch)
+sitearchhdrdir = $(sitehdrdir)/$(sitearch)
+rubyarchhdrdir = $(rubyhdrdir)/$(arch)
 vendorhdrdir = $(rubyhdrdir)/vendor_ruby
 sitehdrdir = $(rubyhdrdir)/site_ruby
 rubyhdrdir = $(includedir)/$(RUBY_VERSION_NAME)
-vendorarchdir = $(rubysitearchprefix)/vendor_ruby/$(ruby_version)
+vendorarchdir = $(vendorlibdir)/$(sitearch)
 vendorlibdir = $(vendordir)/$(ruby_version)
 vendordir = $(rubylibprefix)/vendor_ruby
-sitearchdir = $(DESTDIR)./.gem.20170928-25058-12xywmu
-sitelibdir = $(DESTDIR)./.gem.20170928-25058-12xywmu
-sitedir = $(DESTDIR)/usr/local/lib/site_ruby
-rubyarchdir = $(rubyarchprefix)/$(ruby_version)
+sitearchdir = $(DESTDIR)./.gem.20171003-8474-1pgtzx2
+sitelibdir = $(DESTDIR)./.gem.20171003-8474-1pgtzx2
+sitedir = $(rubylibprefix)/site_ruby
+rubyarchdir = $(rubylibdir)/$(arch)
 rubylibdir = $(rubylibprefix)/$(ruby_version)
 sitearchincludedir = $(includedir)/$(sitearch)
 archincludedir = $(includedir)/$(arch)
 sitearchlibdir = $(libdir)/$(sitearch)
 archlibdir = $(libdir)/$(arch)
 ridir = $(datarootdir)/$(RI_BASE_NAME)
-mandir = $(prefix)/share/man
+mandir = $(datarootdir)/man
 localedir = $(datarootdir)/locale
 libdir = $(exec_prefix)/lib
 psdir = $(docdir)
 pdfdir = $(docdir)
 dvidir = $(docdir)
 htmldir = $(docdir)
-infodir = $(prefix)/share/info
+infodir = $(datarootdir)/info
 docdir = $(datarootdir)/doc/$(PACKAGE)
 oldincludedir = $(DESTDIR)/usr/include
 includedir = $(prefix)/include
-runstatedir = $(localstatedir)/run
-localstatedir = $(DESTDIR)/var
+localstatedir = $(prefix)/var
 sharedstatedir = $(prefix)/com
-sysconfdir = $(DESTDIR)/etc
+sysconfdir = $(prefix)/etc
 datadir = $(datarootdir)
 datarootdir = $(prefix)/share
-libexecdir = $(prefix)/lib/ruby2.3
+libexecdir = $(exec_prefix)/libexec
 sbindir = $(exec_prefix)/sbin
 bindir = $(exec_prefix)/bin
 archdir = $(rubyarchdir)
@@ -68,26 +67,27 @@ CC = gcc
 CXX = g++
 LIBRUBY = $(LIBRUBY_SO)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
-LIBRUBYARG_SHARED = -l$(RUBY_SO_NAME)
-LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static
+LIBRUBYARG_SHARED = -Wl,-R$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)
+LIBRUBYARG_STATIC = -Wl,-R$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)-static
 empty =
 OUTFLAG = -o $(empty)
 COUTFLAG = -o $(empty)
+CSRCFLAG = $(empty)
 
 RUBY_EXTCONF_H = 
-cflags   =  $(optflags) $(debugflags) $(warnflags)
-cxxflags =  $(optflags) $(debugflags) $(warnflags)
+cflags   = $(optflags) $(debugflags) $(warnflags)
+cxxflags = $(optflags) $(debugflags) $(warnflags)
 optflags = -O3 -fno-fast-math
 debugflags = -ggdb3
-warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat -Wno-maybe-uninitialized
+warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wno-tautological-compare -Wno-parentheses-equality -Wno-constant-logical-operand -Wno-self-assign -Wunused-variable -Wimplicit-int -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat -Wsuggest-attribute=noreturn -Wsuggest-attribute=format -Wno-maybe-uninitialized
 CCDLFLAGS = -fPIC
-CFLAGS   = $(CCDLFLAGS) -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fPIC  -g -DXP_UNIX -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES $(ARCH_FLAG)
+CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS = -DHAVE_XMLPARSEDOC -DHAVE_XSLTPARSESTYLESHEETDOC -DHAVE_EXSLTFUNCREGISTER -DHAVE_XMLHASFEATURE -DHAVE_XMLFIRSTELEMENTCHILD -DHAVE_XMLRELAXNGSETPARSERSTRUCTUREDERRORS -DHAVE_XMLRELAXNGSETPARSERSTRUCTUREDERRORS -DHAVE_XMLRELAXNGSETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETPARSERSTRUCTUREDERRORS -I/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/include -I/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/include/libxml2 -I/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/include/libxml2 -Wdate-time -D_FORTIFY_SOURCE=2 $(DEFS) $(cppflags) "-DNOKOGIRI_LIBXML2_PATH=\"/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5\"" "-DNOKOGIRI_LIBXML2_PATCHES=\"\"" "-DNOKOGIRI_LIBXSLT_PATH=\"/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30\"" "-DNOKOGIRI_LIBXSLT_PATCHES=\"\""
-CXXFLAGS = $(CCDLFLAGS) -g -O2 -fstack-protector-strong -Wformat -Werror=format-security $(ARCH_FLAG)
-ldflags  = -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector -rdynamic -Wl,-export-dynamic
-dldflags =  
+CPPFLAGS = -DHAVE_XMLPARSEDOC -DHAVE_XSLTPARSESTYLESHEETDOC -DHAVE_EXSLTFUNCREGISTER -DHAVE_XMLHASFEATURE -DHAVE_XMLFIRSTELEMENTCHILD -DHAVE_XMLRELAXNGSETPARSERSTRUCTUREDERRORS -DHAVE_XMLRELAXNGSETPARSERSTRUCTUREDERRORS -DHAVE_XMLRELAXNGSETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETVALIDSTRUCTUREDERRORS -DHAVE_XMLSCHEMASETPARSERSTRUCTUREDERRORS -I/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/include -I/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/include/libxml2 -I/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/include/libxml2  $(DEFS) $(cppflags) "-DNOKOGIRI_LIBXML2_PATH=\"/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5\"" "-DNOKOGIRI_LIBXML2_PATCHES=\"\"" "-DNOKOGIRI_LIBXSLT_PATH=\"/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30\"" "-DNOKOGIRI_LIBXSLT_PATCHES=\"\""
+CXXFLAGS = $(CCDLFLAGS) $(cxxflags) $(ARCH_FLAG)
+ldflags  = -L. -fstack-protector -rdynamic -Wl,-export-dynamic
+dldflags = -Wl,--compress-debug-sections=zlib 
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CC) -shared
@@ -95,19 +95,19 @@ LDSHAREDXX = $(CXX) -shared
 AR = ar
 EXEEXT = 
 
-RUBY_INSTALL_NAME = $(RUBY_BASE_NAME)2.3
-RUBY_SO_NAME = ruby-2.3
+RUBY_INSTALL_NAME = $(RUBY_BASE_NAME)
+RUBY_SO_NAME = ruby
 RUBYW_INSTALL_NAME = 
 RUBY_VERSION_NAME = $(RUBY_BASE_NAME)-$(ruby_version)
 RUBYW_BASE_NAME = rubyw
 RUBY_BASE_NAME = ruby
 
-arch = x86_64-linux-gnu
+arch = x86_64-linux
 sitearch = $(arch)
-ruby_version = 2.3.0
-ruby = $(bindir)/$(RUBY_BASE_NAME)2.3
+ruby_version = 2.4.0
+ruby = $(bindir)/$(RUBY_BASE_NAME)
 RUBY = $(ruby)
-ruby_headers = $(hdrdir)/ruby.h $(hdrdir)/ruby/ruby.h $(hdrdir)/ruby/defines.h $(hdrdir)/ruby/missing.h $(hdrdir)/ruby/intern.h $(hdrdir)/ruby/st.h $(hdrdir)/ruby/subst.h $(arch_hdrdir)/ruby/config.h
+ruby_headers = $(hdrdir)/ruby.h $(hdrdir)/ruby/backward.h $(hdrdir)/ruby/ruby.h $(hdrdir)/ruby/defines.h $(hdrdir)/ruby/missing.h $(hdrdir)/ruby/intern.h $(hdrdir)/ruby/st.h $(hdrdir)/ruby/subst.h $(arch_hdrdir)/ruby/config.h
 
 RM = rm -f
 RM_RF = $(RUBY) -run -e rm -- -rf
@@ -122,9 +122,8 @@ TOUCH = exit >
 #### End of system configuration section. ####
 
 preload = 
-
-libpath = . $(archlibdir) /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib
-LIBPATH =  -L. -L$(archlibdir) -L/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib -L/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib
+libpath = . $(libdir) /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib
+LIBPATH =  -L. -L$(libdir) -Wl,-R$(libdir) -L/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib -Wl,-R/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib -L/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib -Wl,-R/home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib
 DEFFILE = 
 
 CLEANFILES = mkmf.log
@@ -136,10 +135,11 @@ extout_prefix =
 target_prefix = /nokogiri
 LOCAL_LIBS = 
 LIBS = $(LIBRUBYARG_SHARED) /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib/libexslt.a -lm -ldl -llzma -lz /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib/libxml2.a /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxslt/1.1.30/lib/libxslt.a -ldl -lm -llzma -lz /home/luna/Rails_projects/pinteresting/vendor/bundle/gems/nokogiri-1.8.1/ports/x86_64-pc-linux-gnu/libxml2/2.9.5/lib/libxml2.a -llzma -lpthread -lgmp -ldl -lcrypt -lm   -lc 
-ORIG_SRCS = xslt_stylesheet.c xml_document.c xml_comment.c xml_schema.c xml_reader.c xml_namespace.c xml_node_set.c xml_syntax_error.c html_entity_lookup.c xml_node.c xml_dtd.c xml_processing_instruction.c xml_document_fragment.c html_sax_parser_context.c xml_element_decl.c html_element_description.c nokogiri.c xml_sax_parser.c xml_sax_parser_context.c xml_sax_push_parser.c xml_text.c html_document.c xml_entity_decl.c xml_attribute_decl.c xml_encoding_handler.c xml_attr.c html_sax_push_parser.c xml_libxml2_hacks.c xml_io.c xml_relax_ng.c xml_element_content.c xml_xpath_context.c xml_cdata.c xml_entity_reference.c
+ORIG_SRCS = html_document.c html_element_description.c html_entity_lookup.c html_sax_parser_context.c html_sax_push_parser.c nokogiri.c xml_attr.c xml_attribute_decl.c xml_cdata.c xml_comment.c xml_document.c xml_document_fragment.c xml_dtd.c xml_element_content.c xml_element_decl.c xml_encoding_handler.c xml_entity_decl.c xml_entity_reference.c xml_io.c xml_libxml2_hacks.c xml_namespace.c xml_node.c xml_node_set.c xml_processing_instruction.c xml_reader.c xml_relax_ng.c xml_sax_parser.c xml_sax_parser_context.c xml_sax_push_parser.c xml_schema.c xml_syntax_error.c xml_text.c xml_xpath_context.c xslt_stylesheet.c
 SRCS = $(ORIG_SRCS) 
 OBJS = html_document.o html_element_description.o html_entity_lookup.o html_sax_parser_context.o html_sax_push_parser.o nokogiri.o xml_attr.o xml_attribute_decl.o xml_cdata.o xml_comment.o xml_document.o xml_document_fragment.o xml_dtd.o xml_element_content.o xml_element_decl.o xml_encoding_handler.o xml_entity_decl.o xml_entity_reference.o xml_io.o xml_libxml2_hacks.o xml_namespace.o xml_node.o xml_node_set.o xml_processing_instruction.o xml_reader.o xml_relax_ng.o xml_sax_parser.o xml_sax_parser_context.o xml_sax_push_parser.o xml_schema.o xml_syntax_error.o xml_text.o xml_xpath_context.o xslt_stylesheet.o
 HDRS = $(srcdir)/xml_document.h $(srcdir)/xml_element_decl.h $(srcdir)/xml_entity_decl.h $(srcdir)/xml_attribute_decl.h $(srcdir)/html_entity_lookup.h $(srcdir)/xml_text.h $(srcdir)/xml_libxml2_hacks.h $(srcdir)/xslt_stylesheet.h $(srcdir)/xml_sax_push_parser.h $(srcdir)/html_sax_parser_context.h $(srcdir)/xml_cdata.h $(srcdir)/xml_document_fragment.h $(srcdir)/xml_processing_instruction.h $(srcdir)/xml_node_set.h $(srcdir)/xml_sax_parser_context.h $(srcdir)/html_document.h $(srcdir)/xml_namespace.h $(srcdir)/xml_syntax_error.h $(srcdir)/xml_sax_parser.h $(srcdir)/xml_io.h $(srcdir)/xml_relax_ng.h $(srcdir)/html_sax_push_parser.h $(srcdir)/html_element_description.h $(srcdir)/xml_encoding_handler.h $(srcdir)/xml_reader.h $(srcdir)/xml_entity_reference.h $(srcdir)/xml_element_content.h $(srcdir)/xml_xpath_context.h $(srcdir)/xml_schema.h $(srcdir)/xml_dtd.h $(srcdir)/xml_comment.h $(srcdir)/xml_attr.h $(srcdir)/xml_node.h $(srcdir)/nokogiri.h
+LOCAL_HDRS = 
 TARGET = nokogiri
 TARGET_NAME = nokogiri
 TARGET_ENTRY = Init_$(TARGET_NAME)
@@ -154,9 +154,9 @@ RUBYLIBDIR    = $(sitelibdir)$(target_prefix)
 RUBYARCHDIR   = $(sitearchdir)$(target_prefix)
 HDRDIR        = $(rubyhdrdir)/ruby$(target_prefix)
 ARCHHDRDIR    = $(rubyhdrdir)/$(arch)/ruby$(target_prefix)
-
-TARGET_SO     = $(DLLIB)
-CLEANLIBS     = $(TARGET).so 
+TARGET_SO_DIR =
+TARGET_SO     = $(TARGET_SO_DIR)$(DLLIB)
+CLEANLIBS     = $(TARGET_SO) 
 CLEANOBJS     = *.o  *.bak
 
 all:    $(DLLIB)
@@ -183,17 +183,19 @@ distclean: clean distclean-so distclean-static distclean-rb-default distclean-rb
 realclean: distclean
 install: install-so install-rb
 
-install-so: $(DLLIB) $(TIMESTAMP_DIR)/.RUBYARCHDIR.-.nokogiri.time
+install-so: $(DLLIB) $(TIMESTAMP_DIR)/.sitearchdir.-.nokogiri.time
 	$(INSTALL_PROG) $(DLLIB) $(RUBYARCHDIR)
 clean-static::
 	-$(Q)$(RM) $(STATIC_LIB)
-install-rb: pre-install-rb install-rb-default
-install-rb-default: pre-install-rb-default
+install-rb: pre-install-rb do-install-rb install-rb-default
+install-rb-default: pre-install-rb-default do-install-rb-default
 pre-install-rb: Makefile
 pre-install-rb-default: Makefile
+do-install-rb:
+do-install-rb-default:
 pre-install-rb-default:
 	@$(NULLCMD)
-$(TIMESTAMP_DIR)/.RUBYARCHDIR.-.nokogiri.time:
+$(TIMESTAMP_DIR)/.sitearchdir.-.nokogiri.time:
 	$(Q) $(MAKEDIRS) $(@D) $(RUBYARCHDIR)
 	$(Q) $(TOUCH) $@
 
@@ -205,53 +207,53 @@ site-install-rb: install-rb
 
 .cc.o:
 	$(ECHO) compiling $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $(CSRCFLAG)$<
 
 .cc.S:
 	$(ECHO) translating $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
 .mm.o:
 	$(ECHO) compiling $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $(CSRCFLAG)$<
 
 .mm.S:
 	$(ECHO) translating $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
 .cxx.o:
 	$(ECHO) compiling $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $(CSRCFLAG)$<
 
 .cxx.S:
 	$(ECHO) translating $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
 .cpp.o:
 	$(ECHO) compiling $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -c $(CSRCFLAG)$<
 
 .cpp.S:
 	$(ECHO) translating $(<)
-	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $<
+	$(Q) $(CXX) $(INCFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
 .c.o:
 	$(ECHO) compiling $(<)
-	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -c $<
+	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -c $(CSRCFLAG)$<
 
 .c.S:
 	$(ECHO) translating $(<)
-	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -S $<
+	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
 .m.o:
 	$(ECHO) compiling $(<)
-	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -c $<
+	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -c $(CSRCFLAG)$<
 
 .m.S:
 	$(ECHO) translating $(<)
-	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -S $<
+	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -S $(CSRCFLAG)$<
 
-$(DLLIB): $(OBJS) Makefile
+$(TARGET_SO): $(OBJS) Makefile
 	$(ECHO) linking shared-object nokogiri/$(DLLIB)
 	-$(Q)$(RM) $(@)
 	$(Q) $(LDSHARED) -o $@ $(OBJS) $(LIBPATH) $(DLDFLAGS) $(LOCAL_LIBS) $(LIBS)
