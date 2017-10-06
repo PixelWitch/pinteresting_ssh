@@ -5,7 +5,9 @@ $navbar-height: 45px;
 $navbar-default-bg: #9b59b6;
 $navbar-default-link-color: white;
 $brand-primary: #8e44ad;
+@import 'bootstrap-sprockets';
 @import 'bootstrap';
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
 
 .center {
      text-align: center;
