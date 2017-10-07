@@ -5,11 +5,11 @@
         <%= link_to image_tag(pin.image.url(:medium)), pin %>
         <div class="panel-body">
         <%= pin.description %><br/>
-        <strong><%= pin.user.email if pin.user %></strong><br/>
+        <strong><%= pin.user.name if pin.user %></strong><br/>
         <%= link_to pin do %>
           <span class="glyphicon glyphicon-search"></span> Look
         <% end %>
-        <% if pin.user == current_user %>
+        <% if current_user && pin.user == current_user %>
           <%= link_to edit_pin_path(pin) do %>
             <span class="glyphicon glyphicon-cog"></span> Edit
           <% end %>
